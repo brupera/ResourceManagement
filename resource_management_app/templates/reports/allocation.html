@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Allocation{% endblock title %}
+{% block content %}
+<div class="card-body">
+
+   <div class="card shadow mb-4">
+       <div class="card-header py-3">
+           <h6 class="m-0 font-weight-bold text-primary">Allocation</h6>
+       </div>
+
+   <form name="create-employee-form" action='' method='post' style="padding: 25px;">
+    {% csrf_token %}
+
+    <div class="form-group">
+    <table id='table'>
+        <col>
+
+        {% for year in years %}
+            <colgroup span="{{ years_count }}">{{ year }}</colgroup>
+        {% endfor %}
+
+        {% for month in months %}
+            <colgroup span="">{{ month }}</colgroup>
+        {% endfor %}
+
+        {% for month in months %}
+
+        {% endfor %}
+        <tr>
+        {% for day in calendar_days %}
+            <td>{{day}}</td>
+        {% endfor %}
+        </tr>
+    </table>
+    </div>
+
+    <input type="submit" value="Submit" class="btn btn-secondary bg-primary " />
+    <a href="{% url 'employee-allocation-list' %}" class="btn btn-secondary ">
+        <span class="text">Cancel</span>
+    </a>
+
+  </form>
+
+  </div>
+
+</div>
+{% endblock content %}
+

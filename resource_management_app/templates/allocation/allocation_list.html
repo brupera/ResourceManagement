@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Allocation{% endblock %}
+
+{% block content %}
+<!-- Page Heading -->
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Allocation</h1>
+                        <a  href="{% url 'allocation-create' %}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                class="fas fa-sm text-white-50"></i> Add Allocation</a>
+                    </div>
+
+        {% csrf_token %}
+        <!-- Action buttons  -->
+        <div class="card shadow mb-4">
+<!--            <div class="card-header py-3">-->
+
+<!--            </div>-->
+               <div class="card-body">
+                   <div class="row p-3">
+
+                       <div class="col-md-8">
+
+                    <dl>
+                        {% for allocation_type in allocation_types %}
+                            <dt style ='background-color: {{ allocation_type.color_code }}'></dt>
+                            <dd>{{ allocation_type.name }}</dd>
+                        {% endfor %}
+                        <dt style="background-color: #E59E6D"></dt>
+                        <dd>Bank Holiday</dd>
+                    </dl>
+
+                       </div>
+                       <div class="col-md-4">
+                             <form name="allocation-timeline-calendar-filter" action="" method="get" class="right">
+                    <div>
+                        <label for="start_date">Date</label> <input type="date" name="start_date" required="" id="start_date">
+                        <label for="end_date">To</label> <input type="date" name="end_date" required="" id="end_date">
+                        <input type="submit" value="Submit" class="btn btn-secondary bg-primary ">
+                    </div>
+                </form>
+                    </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+
+            <div style="overflow: auto;"  id="timeline-calendar">
+
+
+                {{ calendar }}
+
+            </div>
+        </div>
+</div>
+
+
+
+
+{% endblock %}
+
+{% block extra_script %}
+<style>
+    .table th,
+    .table td {
+        padding: 0.17rem;
+        min-width: 30px;
+        min-height: 30px;
+        width: 30px;
+        height: 30px;
+    }
+
+</style>
+
+<!-- Custom styles for this timeline calender-->
+<link href="{% static '/css/timelinecalendar.css' %}" rel="stylesheet">
+
+<script>
+
+$(document).ready(function () {
+
+  /* Initialising Start and End Dates.
+     Creating 8 weeks view by adding 56 days*/
+  var start_date =  new Date();
+  var end_date = new Date();
+  end_date.setDate(start_date.getDate() + 56);
+
+  /* Date picker is taking date as DD/MM/YYYY
+     hance need to slice date in DD MM YY*/
+  var day = ("0" + start_date.getDate()).slice(-2);
+  var month = ("0" + (start_date.getMonth() + 1)).slice(-2);
+  var sDate = start_date.getFullYear()+"-"+(month)+"-"+(day);
+
+  $("#start_date").val(sDate);
+
+  /* Date picker is taking date as DD/MM/YYYY
+     hance need to slice date in DD MM YY*/
+  var day = ("0" + end_date.getDate()).slice(-2);
+  var month = ("0" + (end_date.getMonth() + 1)).slice(-2);
+  sDate = end_date.getFullYear()+"-"+(month)+"-"+(day);
+
+  $("#end_date").val(sDate);
+
+  // Calling timeline calendar when first time page loads */
+  getTimeLineCalender($("#start_date").val(), $("#end_date").val());
+
+  $("form").submit(function (event) {
+
+    start_date = $("#start_date").val();
+    end_date  = $("#end_date").val();
+
+    if(end_date < start_date){
+        alert("Endend Date must be greater than Start Date.");
+        event.preventDefault();
+        return;
+    }
+    var formData = {
+      start_date: $("#start_date").val(),
+      end_date: $("#end_date").val(),
+    };
+
+    $.ajax({
+      type: "GET",
+      url: "../api/allocations/",
+      data: formData,
+      dataType: "json",
+      encode: true,
+    }).done(function (data) {
+      $("#timeline-calendar").html(data.calendar);
+
+<!--      $('#timeline-calendar-table').DataTable({-->
+<!--        "ordering": true,-->
+<!--        "orderable": true,-->
+<!--        "paging": false,-->
+<!--        oLanguage: {-->
+<!--            "sSearch": "Filter by Name, Job Title & Skill:"-->
+<!--        },-->
+<!--       } );-->
+
+    });
+    event.preventDefault();
+  });
+
+  function getTimeLineCalender(start_date, end_date){
+
+    var formData = {
+      start_date: start_date,
+      end_date: end_date,
+    };
+
+    $.ajax({
+      type: "GET",
+      url: "../api/allocations/",
+      data: formData,
+      dataType: "json",
+      encode: true,
+    }).done(function (data) {
+      $("#timeline-calendar").html(data.calendar);
+
+<!--      $('#timeline-calendar-table').DataTable({-->
+<!--        "ordering": true,-->
+<!--        "orderable": true,-->
+<!--        "paging": false,-->
+<!--        oLanguage: {-->
+<!--            "sSearch": "Filter by Name, Job Title & Skill:"-->
+<!--        },-->
+<!--       } );-->
+    });
+  }
+
+
+});
+
+  function allocation_edit(e) {
+    // new location
+    location.href= '/allocation/update/' + e;
+  };
+
+</script>
+{% endblock extra_script %}

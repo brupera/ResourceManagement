@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Employees{% endblock %}
+
+{% block content %}
+<!-- Page Heading -->
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Employees</h1>
+    <a  href="{% url 'employee-create' %}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+            class="fas fa-sm text-white-50"></i>Add Employee</a>
+</div>
+
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped" id="table" width="100%" cellspacing="0">
+
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_script %}
+<script>
+$(function() {
+
+  $('#table').DataTable( {
+        "ordering": true,
+        "orderable": true,
+        "processing": true,
+        ajax: '{{ request.path }}?datatables=1',
+        serverSide: true,
+        columns: [
+            { data: 'emp_id', title: 'Employee ID' },
+            { data: 'first_name', title: 'First Name' },
+            { data: 'last_name', title: 'Last Name' },
+            { data: 'job_title__name', title: 'Job Title' },
+            { data: 'line_manager__first_name', title: 'Line Manager' },
+            { data: 'skills__name', title: 'Skills' },
+            {"mRender": function ( data, type, row ) {
+                        return '<a href=/employee/update/'+row.id+'>Edit</a>';}
+            },
+            {"mRender": function ( data, type, row ) {
+                        return '<a href=/employee/delete/'+row.id+'>Delete</a>';}
+            },
+        ],
+    } );
+})
+</script>
+{% endblock extra_script %}

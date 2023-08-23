@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Are you sure?{% endblock %}
+
+{% block content %}
+<!-- Page Heading -->
+<h1 class="h3 mb-2 text-gray-800">Are you sure?</h1>
+<p class="mb-4">Are you sure you want to delete the selected Employee? All of the following objects and their related items will be deleted:</p>
+
+<div class="card-body">
+    <div class="card shadow mb-4">
+       <form action='' method='post' style="padding: 25px;">
+            {% csrf_token %}
+           <p >Are you sure you want to delete the {{ employee.first_name }}?</p>
+            {{ form.as_p }}
+
+            <input type="submit" value="Yes, I am sure" class="btn btn-danger" />
+            <a href="{% url 'employee-list' %}" class="btn btn-secondary ">
+                <span class="text">No, take me back</span>
+            </a>
+       </form>
+    </div>
+</div>
+{% endblock %}
+

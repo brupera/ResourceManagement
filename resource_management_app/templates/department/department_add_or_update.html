@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if department.id %} Edit {% else %} New {% endif %} Departments{% endblock %}
+
+{% block content %}
+<div class="card-body">
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+           <h6 class="m-0 font-weight-bold text-primary">{% if department.id %} Edit {% else %} New {% endif %} Departments</h6>
+        </div>
+
+       <form name="create-department-form" action='' method='POST' style="padding: 25px;">
+       {% csrf_token %}
+
+        {{ form.non_field_errors }}
+
+        {% for field in form %}
+        <div class="form-group">
+            {{ field.errors }}
+            {{ field.label_tag }} {{ field  }}
+            {% if field.help_text %}
+                <p class="help">{{ field.help_text|safe }}</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+
+        <input type="submit" value="Submit" class="btn btn-secondary bg-primary " />
+        <a href="{% url 'department-list' %}" class="btn btn-secondary ">
+            <span class="text">Cancel</span>
+        </a>
+
+      </form>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block extra_script %}
+ <script>
+    // Wait for the DOM to be ready
+    $(function() {
+      // Initialize form validation on the form.
+      $("form[name='create-department-form']").validate({
+        // Specify validation rules
+        rules: {
+          // The key name on the left side is the name attribute
+          // of an input field. Validation rules are defined
+          // on the right side
+        },
+        // Specify validation error messages
+        messages: {
+
+        },
+        // Make sure the form is submitted to the destination defined
+        // in the "action" attribute of the form when valid
+        submitHandler: function(form) {
+          form.submit();
+        }
+      });
+    });
+</script>
+{% endblock %}

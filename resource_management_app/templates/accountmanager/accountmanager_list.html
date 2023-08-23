@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Account Managers{% endblock %}
+
+{% block content %}
+<!-- Page Heading -->
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Account Manager</h1>
+    <a  href="{% url 'accountmanager-create' %}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+            class="fas fa-sm text-white-50"></i>Add Account Manager</a>
+</div>
+
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped" id="table" width="100%" cellspacing="0">
+
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_script %}
+<script>
+$(function() {
+
+  $('#table').DataTable( {
+        "ordering": true,
+        "orderable": true,
+        "processing": true,
+        ajax: '{{ request.path }}?datatables=1',
+        serverSide: true,
+        columns: [
+            { data: 'first_name', title: 'First Name' },
+            { data: 'last_name', title: 'Last Name' },
+            { data: 'email', title: 'Email' },
+            { data: 'phone', title: 'Phone' },
+            {"mRender": function ( data, type, row ) {
+                        return '<a href=/accountmanager/update/'+row.id+'>Edit</a>';}
+            },
+            {"mRender": function ( data, type, row ) {
+                        return '<a href=/accountmanager/delete/'+row.id+'>Delete</a>';}
+            },
+        ],
+    } );
+})
+</script>
+{% endblock extra_script %}

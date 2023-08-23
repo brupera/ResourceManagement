@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Project{% endblock %}
+
+{% block content %}
+<!-- Page Heading -->
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Project</h1>
+    <a  href="{% url 'project-create' %}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+            class="fas fa-sm text-white-50"></i>Add Project</a>
+</div>
+
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+<!--                        <div class="card-header py-3">-->
+<!--                            <h6 class="m-0 font-weight-bold text-primary">Department</h6>-->
+<!--                        </div>-->
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped" id="table" width="100%" cellspacing="0">
+
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_script %}
+<script>
+$(function() {
+
+  $('#table').DataTable( {
+        "ordering": true,
+        "orderable": true,
+        "processing": true,
+        ajax: '{{ request.path }}?datatables=1',
+        serverSide: true,
+        columns: [
+            { data: 'name', title: 'Project Name' },
+            { data: 'start_date', title: 'Start Date' },
+            { data: 'end_date', title: 'End Date' },
+            { data: 'customer__name', title: 'Customer' },
+            { data: 'project_type__name', title: 'Project Type' },
+            { data: 'customer_delivery_lead__first_name', title: 'Customer Delivery Lead' },
+            { data: 'service_delivery_manager__first_name', title: 'Service Delivery Manager' },
+            {"mRender": function ( data, type, row ) {
+                        return '<a href=/project/update/'+row.id+'>Edit</a>';}
+            },
+            {"mRender": function ( data, type, row ) {
+                        return '<a href=/project/delete/'+row.id+'>Delete</a>';}
+            },
+        ],
+    } );
+})
+</script>
+{% endblock extra_script %}

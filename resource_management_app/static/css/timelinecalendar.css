@@ -1,0 +1,74 @@
+
+.weekday {
+    text-align: center;
+    vertical-align: middle;
+    background: gray;
+    color:white;
+    border: solid;
+}
+
+.week-commencing {
+    text-align: center;
+    vertical-align: middle;
+    border-left: solid;
+    border-right: solid;
+    background: gray;
+    color:white;
+}
+
+.project-detail {
+    background: #2a85bb;
+    border: 2px solid;
+    vertical-align: middle;
+    border-top: solid;
+    border-bottom: solid;
+    color: white;
+}
+
+.allocation-td{
+     cursor: pointer;
+     vertical-align: top;
+     border: 2px solid;
+}
+
+.un-allocated-td{
+     cursor: pointer;
+     vertical-align: top;
+     border: 2px solid;
+}
+
+.bank-holiday{
+    cursor: pointer;
+    background: #E59E6D;
+    vertical-align: top;
+    border: 2px solid;
+}
+
+.weekend{
+    background: #C0C0C0;
+    vertical-align: top;
+    border: 2px solid;
+}
+
+dl dt{
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+}
+dl dd{
+    display: inline-block;
+    margin: 0px 10px;
+    padding-bottom: 0;
+    vertical-align: middle;
+}
+
+custompadding {
+  vertical-align: top;
+  border-top: 2px solid #e3e6f0;
+}
+
+project-header{
+    background: gray;
+
+}
